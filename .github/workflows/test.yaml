@@ -34,11 +34,6 @@ jobs:
           eval $(ssh-agent -s)
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
           echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
-          alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22"
-          sshExec "ls -al"
-
-      - name: Check sshExec
-        run: sshExec "ls -al"
 
       - name: Deploy files via rsync
         run: rsync -avz ${{ github.workspace }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}
