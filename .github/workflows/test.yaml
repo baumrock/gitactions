@@ -42,11 +42,11 @@ jobs:
           echo "SRC=${{ github.workspace }}" >> $GITHUB_ENV
 
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
-      - name: Create SSH key
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      # - name: Create SSH key
+      #   run: |
+      #     install -m 600 -D /dev/null ~/.ssh/id_rsa
+      #     echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+      #     echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
       - name: List ENV
         run: cat $GITHUB_ENV
