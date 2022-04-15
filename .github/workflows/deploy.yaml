@@ -1,12 +1,17 @@
 name: Deploy to Server
+
+# where to deploy to
 env:
   ROOT_PATH_STAGING: /home/users/kollar/www/kollar.at.staging.baumrock.com
   ROOT_PATH_PRODUCTION: /home/users/kollar/www/www.kollar.at
+
+# set branches
 on:
   push:
     branches:
       - main
       - dev
+
 jobs:
   deploy-to-remote:
     runs-on: ubuntu-latest
