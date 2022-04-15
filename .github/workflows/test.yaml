@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - dev
 jobs:
   deploy-to-remote:
     runs-on: ubuntu-latest
@@ -17,12 +18,20 @@ jobs:
       - name: List files in the repository
         run: ls ${{ github.workspace }}
 
+      # https://bit.ly/3jHvfzd
+      - name: Configuration for main branch
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          echo "ROOT_PATH=${{ secrets.ROOT_PATH_STAGING }}" >> $GITHUB_ENV
+
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
       - name: Create SSH key
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - run: echo ${{ env.ROOT_PATH }}
 
       - name: Deploy with rsync
         run: rsync -avz ${{ github.workspace }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}/tmp
