@@ -7,6 +7,8 @@ on:
 jobs:
   deploy-to-remote:
     runs-on: ubuntu-latest
+    env:
+      SHORT_SHA:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -34,8 +36,8 @@ jobs:
       # shared config
       - name: Build shared config
         run: |
-          echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
-          echo "DEPLOY_NAME=release-$GITHUB_RUN_ID-${{ env.SHORT_SHA }}" >> $GITHUB_ENV
+          SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
+          echo "DEPLOY_NAME=release-$GITHUB_RUN_ID-$SHORT_SHA" >> $GITHUB_ENV
           echo "DEPLOY_FOLDER=${{ env.ROOT_PATH }}/${{ env.DEPLOY_NAME }}" >> $GITHUB_ENV
           echo "USER=${{ secrets.SSH_USER }}" >> $GITHUB_ENV
           echo "HOST=${{ secrets.SSH_HOST }}" >> $GITHUB_ENV
