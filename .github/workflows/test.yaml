@@ -40,7 +40,7 @@ jobs:
           DEPLOY_NAME=release-$GITHUB_RUN_ID-$SHORT_SHA
           echo "DEPLOY_NAME=$DEPLOY_NAME" >> $GITHUB_ENV
 
-          DEPLOY_FOLDER=${{ env.ROOT_PATH }}/${{ env.DEPLOY_NAME }}
+          DEPLOY_FOLDER=${{ env.ROOT_PATH }}/$DEPLOY_NAME
           echo "DEPLOY_FOLDER=$DEPLOY_FOLDER" >> $GITHUB_ENV
 
           USER=${{ secrets.SSH_USER }}
