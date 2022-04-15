@@ -39,8 +39,9 @@ jobs:
 
       - name: check config
         run: |
-          echo foo = $FOO
-          echo bar = $BAR
+          echo "The run id is: $GITHUB_RUN_ID"
+          echo "foo = $FOO"
+          echo "bar = $BAR"
 
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
       - name: Create SSH key
