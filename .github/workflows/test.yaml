@@ -67,3 +67,4 @@ jobs:
           shopt -s expand_aliases
           alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22"
           sshExec "touch ${{ secrets.ROOT_PATH_STAGING }}/deploy2.txt"
+
