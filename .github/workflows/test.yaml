@@ -36,5 +36,6 @@ jobs:
 
       - name: ls root path
         run: |
-          ls -al ${{ secrets.ROOT_PATH_STAGING }}
-        shell: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "{0}"
+          shopt -s expand_aliases
+          alias ll="ls -al"
+          ll ${{ github.workspace }}
