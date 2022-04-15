@@ -1,0 +1,3 @@
+[submodule "RockFinder3"]
+	path = RockFinder3
+	url = git@github.com:baumrock/RockFinder3.git
