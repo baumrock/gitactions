@@ -1,10 +1,8 @@
 name: Deploy to Server
 on:
-  # Set your workflow to run on push events to the develop and all feature branches
   push:
     branches:
-      - develop
-      - feature/*
+      - dev
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
