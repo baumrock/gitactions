@@ -26,15 +26,15 @@ jobs:
           echo "ROOT_PATH=${{ secrets.ROOT_PATH_PRODUCTION }}" >> $GITHUB_ENV
 
       # config for dev branch
-      - name: Configuration for main branch
-        if: ${{ github.ref == 'refs/heads/main' }}
+      - name: Configuration for dev branch
+        if: ${{ github.ref == 'refs/heads/dev' }}
         run: |
           echo "ROOT_PATH=${{ secrets.ROOT_PATH_STAGING }}" >> $GITHUB_ENV
 
       # shared config
       - name: Build shared config
         run: |
-          echo "DEPLOY_NAME={$GITHUB_RUN_ID}-test" >> $GITHUB_ENV
+          echo "DEPLOY_NAME=$GITHUB_RUN_ID-test" >> $GITHUB_ENV
 
       - name: check config
         run: |
