@@ -48,8 +48,11 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      - name: Deploy with rsync
-        run: rsync -avz --delete $SRC/ $USER@$HOST:$DEPLOY_FOLDER
+      - name: List ENV
+        run: cat $GITHUB_ENV
 
-      - name: Trigger PHP deployment on remote
-        run: ssh $USER@$HOST -p22 "cd $DEPLOY_FOLDER && php -v && ll"
+      # - name: Deploy with rsync
+        # run: rsync -avz --delete ${SRC}/ ${USER}@$HOST:$DEPLOY_FOLDER
+
+      # - name: Trigger PHP deployment on remote
+      #   run: ssh $USER@$HOST -p22 "cd $DEPLOY_FOLDER && php -v && ll"
