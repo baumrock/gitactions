@@ -37,4 +37,4 @@ jobs:
         run: rsync -avz ${{ github.workspace }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}/tmp
 
       - name: Trigger PHP deployment on remote
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22 "cd ${{ secrets.ROOT_PATH_STAGING }}/tmp && php -v"
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22 "cd ${{ secrets.ROOT_PATH_STAGING }}/tmp && php -v && echo '${{ env.ROOT_PATH }}' > root-path.txt"
