@@ -62,9 +62,9 @@ jobs:
       - name: Deploy with rsync
         run: rsync -avz --delete ${{ env.SRC }}/ ${{ env.USER }}@${{ env.HOST }}:${{ env.DEPLOY_FOLDER }}
 
-      # - name: Trigger PHP Deployment on remote
-      #   run: |
-      #     shopt -s expand_aliases
-      #     alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22"
-      #     sshExec "touch ${{ secrets.ROOT_PATH_STAGING }}/deploy2.txt"
+      - name: Trigger PHP Deployment on remote
+        run: |
+          shopt -s expand_aliases
+          alias sshExec="ssh ${{ env.USER }}@${{ env.HOST }} -p22"
+          sshExec "cd ${{ env.DEPLOY_FOLDER }} && php deploy.php"
 
