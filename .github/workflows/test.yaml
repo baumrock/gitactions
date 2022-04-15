@@ -39,7 +39,7 @@ jobs:
           echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        run: rsync -avz --delete ${{ github.workspace }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.ROOT_PATH }}
+        run: rsync -avz --delete ${{ github.workspace }}/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.ROOT_PATH }}
 
       - name: Trigger PHP deployment on remote
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22 "cd ${{ env.ROOT_PATH }} && php -v"
