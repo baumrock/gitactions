@@ -34,24 +34,22 @@ jobs:
       # shared config
       - name: Build shared config
         run: |
-          export FOO="foo"
-          export BAR="bar"
+          echo "DEPLOY_NAME={$GITHUB_RUN_ID}-test" >> $GITHUB_ENV
 
       - name: check config
         run: |
-          echo "The run id is: $GITHUB_RUN_ID"
-          echo "foo = $FOO"
-          echo "bar = $BAR"
+          echo "$DEPLOY_NAME"
+          echo "${{ env.DEPLOY_NAME }}"
 
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
-      - name: Create SSH key
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      # - name: Create SSH key
+      #   run: |
+      #     install -m 600 -D /dev/null ~/.ssh/id_rsa
+      #     echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+      #     echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      - name: Deploy with rsync
-        run: rsync -avz --delete ${{ github.workspace }}/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.ROOT_PATH }}
+      # - name: Deploy with rsync
+      #   run: rsync -avz --delete ${{ github.workspace }}/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.ROOT_PATH }}
 
-      - name: Trigger PHP deployment on remote
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22 "cd ${{ env.ROOT_PATH }} && php -v"
+      # - name: Trigger PHP deployment on remote
+      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22 "cd ${{ env.ROOT_PATH }} && php -v"
