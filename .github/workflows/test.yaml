@@ -25,15 +25,16 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
       - name: Add SSH Key
-        run: which ssh-agent || ( apk add --no-cache openssh )
-        run: which rsync || ( apk add --no-cache rsync )
-        run: mkdir -p ~/.ssh
-        run: chmod 700 ~/.ssh
-        run: eval $(ssh-agent -s)
-        run: echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-        run: echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
-        run: alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22"
-        run: sshExec "ll"
+        run: |
+          which ssh-agent || ( apk add --no-cache openssh )
+          which rsync || ( apk add --no-cache rsync )
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          eval $(ssh-agent -s)
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
+          alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22"
+          sshExec "ll"
 
       - name: Check sshExec
         run: sshExec "ll"
