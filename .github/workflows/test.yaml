@@ -37,16 +37,21 @@ jobs:
       - name: Build shared config
         run: |
           SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
-          DEPLOY_NAME=release-$GITHUB_RUN_ID-$SHORT_SHA
-          DEPLOY_FOLDER=${{ env.ROOT_PATH }}/${{ env.DEPLOY_NAME }}
-          USER=${{ secrets.SSH_USER }}
-          HOST=${{ secrets.SSH_HOST }}
-          SRC=${{ github.workspace }}
+          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
 
+          DEPLOY_NAME=release-$GITHUB_RUN_ID-$SHORT_SHA
           echo "DEPLOY_NAME=$DEPLOY_NAME" >> $GITHUB_ENV
+
+          DEPLOY_FOLDER=${{ env.ROOT_PATH }}/${{ env.DEPLOY_NAME }}
           echo "DEPLOY_FOLDER=$DEPLOY_FOLDER" >> $GITHUB_ENV
+
+          USER=${{ secrets.SSH_USER }}
           echo "USER=$USER" >> $GITHUB_ENV
+
+          HOST=${{ secrets.SSH_HOST }}
           echo "HOST=$HOST" >> $GITHUB_ENV
+
+          SRC=${{ github.workspace }}
           echo "SRC=$SRC" >> $GITHUB_ENV
 
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
