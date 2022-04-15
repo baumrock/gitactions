@@ -37,5 +37,6 @@ jobs:
       - name: ls root path
         run: |
           shopt -s expand_aliases
-          alias ll="ls -al"
-          ll ${{ github.workspace }}
+          alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }} -p22"
+          sshExec "pwd"
+          sshExec "ls -al"
