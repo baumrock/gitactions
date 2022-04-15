@@ -26,7 +26,6 @@ jobs:
 
       - name: Add SSH Key
         run: |
-          shopt -s expand_aliases
           which ssh-agent || ( apk add --no-cache openssh )
           which rsync || ( apk add --no-cache rsync )
           mkdir -p ~/.ssh
@@ -34,6 +33,7 @@ jobs:
           eval $(ssh-agent -s)
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
           echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
+          echo ${{ secrets.ROOT_PATH_STAGING }}
 
       - name: Deploy files via rsync
         run: rsync -avz ${{ github.workspace }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}
