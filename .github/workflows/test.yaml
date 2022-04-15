@@ -3,18 +3,67 @@ on:
   push:
     branches:
       - main
+      - dev
 jobs:
-  Explore-GitHub-Actions:
+  deploy-to-remote:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
+      - name: Checkout
         uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+        with:
+          # use github PAT https://bit.ly/3xvOvrF
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+
       - name: List files in the repository
+        run: ls ${{ github.workspace }}
+
+      # https://bit.ly/3jHvfzd
+      # config for main branch
+      - name: Configuration for main branch
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          echo "ROOT_PATH=${{ secrets.ROOT_PATH_PRODUCTION }}" >> $GITHUB_ENV
+
+      # config for dev branch
+      - name: Configuration for dev branch
+        if: ${{ github.ref == 'refs/heads/dev' }}
+        run: |
+          echo "ROOT_PATH=${{ secrets.ROOT_PATH_STAGING }}" >> $GITHUB_ENV
+
+      # shared config
+      - name: Build shared config
+        run: |
+          SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`
+          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
+
+          DEPLOY_NAME=release-$GITHUB_RUN_ID-$SHORT_SHA
+          echo "DEPLOY_NAME=$DEPLOY_NAME" >> $GITHUB_ENV
+
+          DEPLOY_FOLDER=${{ env.ROOT_PATH }}/${{ env.DEPLOY_NAME }}
+          echo "DEPLOY_FOLDER=$DEPLOY_FOLDER" >> $GITHUB_ENV
+
+          USER=${{ secrets.SSH_USER }}
+          echo "USER=$USER" >> $GITHUB_ENV
+
+          HOST=${{ secrets.SSH_HOST }}
+          echo "HOST=$HOST" >> $GITHUB_ENV
+
+          SRC=${{ github.workspace }}
+          echo "SRC=$SRC" >> $GITHUB_ENV
+
+      # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
+      - name: Create SSH key
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Deploy with rsync
+        run: rsync -avz --delete ${{ github.workspace }}/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}
+
+      - name: Trigger PHP Deployment on remote
+        run: |
+          shopt -s expand_aliases
+          alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22"
+          sshExec "touch ${{ secrets.ROOT_PATH_STAGING }}/deploy.txt"
