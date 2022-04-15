@@ -24,6 +24,7 @@ jobs:
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
+      # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
       - name: Create SSH key
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
@@ -32,3 +33,8 @@ jobs:
 
       - name: Deploy with rsync
         run: rsync -avz --delete . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}
+
+      - name: ls root path
+        run: |
+          ls -al ${{ secrets.ROOT_PATH_STAGING }}
+        shell: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "{0}"
