@@ -34,22 +34,22 @@ jobs:
       # shared config
       - name: Build shared config
         run: |
-          echo "DEPLOY_NAME=$GITHUB_RUN_ID-test" >> $GITHUB_ENV
-
-      - name: check config
-        run: |
-          echo "$DEPLOY_NAME"
-          echo "${{ env.DEPLOY_NAME }}"
+          echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+          echo "DEPLOY_NAME=release-$GITHUB_RUN_ID-$SHORT_SHA" >> $GITHUB_ENV
+          echo "DEPLOY_FOLDER=$ROOT_PATH/$DEPLOY_NAME" >> $GITHUB_ENV
+          echo "USER=${{ secrets.SSH_USER }}" >> $GITHUB_ENV
+          echo "HOST=${{ secrets.SSH_HOST }}" >> $GITHUB_ENV
+          echo "SRC=${{ github.workspace }}" >> $GITHUB_ENV
 
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
-      # - name: Create SSH key
-      #   run: |
-      #     install -m 600 -D /dev/null ~/.ssh/id_rsa
-      #     echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-      #     echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      - name: Create SSH key
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      # - name: Deploy with rsync
-      #   run: rsync -avz --delete ${{ github.workspace }}/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ env.ROOT_PATH }}
+      - name: Deploy with rsync
+        run: rsync -avz --delete $SRC/ $USER@$HOST:$DEPLOY_FOLDER
 
-      # - name: Trigger PHP deployment on remote
-      #   run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22 "cd ${{ env.ROOT_PATH }} && php -v"
+      - name: Trigger PHP deployment on remote
+        run: ssh $USER@$HOST -p22 "cd $DEPLOY_FOLDER && php -v && ll"
