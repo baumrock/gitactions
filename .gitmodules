@@ -4,3 +4,6 @@
 [submodule "RockMigrations"]
 	path = RockMigrations
 	url = git@github.com:baumrock/RockMigrations.git
+[submodule "site/modules/RockDeploy"]
+	path = site/modules/RockDeploy
+	url = git@github.com:baumrock/RockDeploy.git

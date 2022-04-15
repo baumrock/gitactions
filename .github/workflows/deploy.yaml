@@ -62,9 +62,9 @@ jobs:
       - name: Deploy with rsync
         run: rsync -avz --delete ${{ env.SRC }}/ ${{ env.USER }}@${{ env.HOST }}:${{ env.DEPLOY_FOLDER }}
 
-      - name: Trigger PHP Deployment on remote
+      - name: Trigger RockDeploy
         run: |
           shopt -s expand_aliases
           alias sshExec="ssh ${{ env.USER }}@${{ env.HOST }} -p22"
-          sshExec "php ${{ env.DEPLOY_FOLDER }}/deploy.php"
+          sshExec "php ${{ env.DEPLOY_FOLDER }}/site/rockdeploy.php"
 
