@@ -14,6 +14,14 @@ jobs:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
 
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}/RockMigrations
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
       - name: Create SSH key
         run: |
