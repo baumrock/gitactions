@@ -14,6 +14,9 @@ jobs:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
 
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       - name: List files in the repository
@@ -29,11 +32,11 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      # - name: Deploy with rsync
-      #   run: rsync -avz ${{ github.workspace }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}/tmp
+      - name: Deploy with rsync
+        run: rsync -avz ${{ github.workspace }}/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}
 
       - name: Trigger PHP Deployment on remote
         run: |
           shopt -s expand_aliases
           alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22"
-          sshExec "cd ${{ secrets.ROOT_PATH_STAGING }}/tmp && pwd"
+          sshExec "cd ${{ secrets.ROOT_PATH_STAGING }} && pwd"
