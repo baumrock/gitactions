@@ -31,6 +31,17 @@ jobs:
         run: |
           echo "ROOT_PATH=${{ secrets.ROOT_PATH_STAGING }}" >> $GITHUB_ENV
 
+      # shared config
+      - name: Build shared config
+        run: |
+          export FOO="foo"
+          export BAR="bar"
+
+      - name: check config
+        run: |
+          echo foo = $FOO
+          echo bar = $BAR
+
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
       - name: Create SSH key
         run: |
