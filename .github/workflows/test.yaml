@@ -64,6 +64,7 @@ jobs:
 
       - name: Trigger PHP Deployment on remote
         run: |
-          cd ${{ env.DEPLOY_FOLDER }} && php deploy.php
-        shell: /usr/bin/bash ssh ${{ env.USER }}@${{ env.HOST }} -p22
+          shopt -s expand_aliases
+          alias sshExec="ssh ${{ env.USER }}@${{ env.HOST }} -p22"
+          sshExec "php ${{ env.DEPLOY_FOLDER }}/deploy.php"
 
