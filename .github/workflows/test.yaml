@@ -28,13 +28,12 @@ jobs:
       # config for dev branch
       - name: Configuration for dev branch
         if: ${{ github.ref == 'refs/heads/dev' }}
-        run: |
-          echo "ROOT_PATH=${{ secrets.ROOT_PATH_STAGING }}" >> $GITHUB_ENV
+        run: echo "ROOT_PATH=${{ secrets.ROOT_PATH_STAGING }}" >> $GITHUB_ENV
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
 
       # shared config
       - name: Build shared config
         run: |
-          echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
           echo "DEPLOY_NAME=release-$GITHUB_RUN_ID-${{ env.SHORT_SHA }}" >> $GITHUB_ENV
           echo "DEPLOY_FOLDER=${{ env.ROOT_PATH }}/${{ env.DEPLOY_NAME }}" >> $GITHUB_ENV
           echo "USER=${{ secrets.SSH_USER }}" >> $GITHUB_ENV
