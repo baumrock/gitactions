@@ -64,8 +64,11 @@ jobs:
       - name: List ENV
         run: cat $GITHUB_ENV
 
-      - name: Deploy with rsync
-        run: rsync -avz ${{ env.SRC }}/ ${{ env.USER }}@${{ env.HOST }}:${{ env.DEPLOY_FOLDER }}
+      - name: Create deployment folder
+        run: ssh ${{ env.USER }}@${{ env.HOST }} -p22 "mkdir -p ${{ env.DEPLOY_FOLDER }} && cd ${{ env.DEPLOY_FOLDER }} && pwd"
 
-      - name: Trigger PHP deployment on remote
-        run: ssh $USER@$HOST -p22 "cd $DEPLOY_FOLDER && php -v && ll"
+      # - name: Deploy with rsync
+      #   run: rsync -avz ${{ env.SRC }}/ ${{ env.USER }}@${{ env.HOST }}:${{ env.DEPLOY_FOLDER }}
+
+      # - name: Trigger PHP deployment on remote
+      #   run: ssh ${{ env.USER }}@${{ env.HOST }} -p22 "cd $DEPLOY_FOLDER && php -v && ll"
