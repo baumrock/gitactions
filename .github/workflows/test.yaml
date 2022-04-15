@@ -12,28 +12,23 @@ jobs:
         with:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
       - name: Check out repository code
         uses: actions/checkout@v3
+
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}/RockFinder3
+          ls ${{ github.workspace }}/RockMigrations
+
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-      - name: Add SSH Key
+      - name: Create SSH key
         run: |
-          which ssh-agent || ( apk add --no-cache openssh )
-          which rsync || ( apk add --no-cache rsync )
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          eval $(ssh-agent -s)
-          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
-          echo "${{ secrets.ROOT_PATH_STAGING }}"
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      - name: Deploy files via rsync
-        run: rsync -avz ${{ github.workspace }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}
+      - name: Deploy with rsync
+        run: rsync -avz --delete . ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}
