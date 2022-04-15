@@ -14,13 +14,8 @@ jobs:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
 
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-
       - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}/RockMigrations
-
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+        run: ls ${{ github.workspace }}
 
       # ssh-keyscan your.remote.com --> output to git secret KNOWN_HOSTS
       - name: Create SSH key
@@ -32,8 +27,5 @@ jobs:
       - name: Deploy with rsync
         run: rsync -avz ${{ github.workspace }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.ROOT_PATH_STAGING }}/tmp
 
-      - name: Trigger PHP Deployment on remote
-        run: |
-          shopt -s expand_aliases
-          alias sshExec="ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22"
-          sshExec "cd ${{ secrets.ROOT_PATH_STAGING }}/tmp && pwd"
+      - name: Trigger PHP deployment on remote
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p22 "cd ${{ secrets.ROOT_PATH_STAGING }}/tmp && php echo 'works!'"
