@@ -5,7 +5,7 @@ on:
   - push
 
 env:
-  JSON: '{
+  PATHS: '{
     "foo":"FOO",
     "bar": "BAR"
   }'
@@ -14,6 +14,7 @@ jobs:
   json-test:
     runs-on: ubuntu-latest
     steps:
-      - name: JSON
+      - name: Get path
         run: |
-          echo ${{fromJson(env.JSON).foo}}
+          PATHS=${{fromJson(env.PATHS)}}
+          echo $PATHS.foo
