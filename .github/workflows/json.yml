@@ -27,7 +27,6 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Show branch and path
-        needs: job1
         run: |
           echo ${{steps.step1.outputs.test}}
           echo ${{fromJson(inputs.PATHS)[dev]}}
