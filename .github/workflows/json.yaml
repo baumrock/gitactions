@@ -5,7 +5,10 @@ on:
   - push
 
 env:
-  JSON: '{"foo":"FOO", "bar": "BAR"}'
+  JSON: '{
+    "foo":"FOO",
+    "bar": "BAR"
+  }'
 
 jobs:
   json-test:
