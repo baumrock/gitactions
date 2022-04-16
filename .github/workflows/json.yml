@@ -9,9 +9,9 @@ on:
       PATHS:
         type: string
         required: true
-
-env:
-  BRANCH: ${GITHUB_REF##*/}
+      BRANCH:
+        type: string
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,7 +27,7 @@ jobs:
       - name: Show branch and path
         run: |
           echo ${{env.BRANCH}}
-          echo ${{fromJson(inputs.PATHS)[env.BRANCH]}}
+          echo ${{fromJson(inputs.PATHS)[inputs.BRANCH]}}
 
 
 # name: JSON test

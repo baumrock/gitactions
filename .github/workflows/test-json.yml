@@ -11,4 +11,5 @@ jobs:
         "dev": "/home/users/kollar/www/kollar.at.staging.baumrock.com",
         "main": "/home/users/kollar/www/www.kollar.at"
       }'
+      BRANCH: 'dev'
 
