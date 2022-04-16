@@ -6,8 +6,8 @@ on:
 
 env:
   JSON: '{
-    "foo":"FOO",
-    "bar": "BAR"
+    "main":"/path/for/main/branch",
+    "dev": "/path/dev"
   }'
 
 jobs:
@@ -16,5 +16,6 @@ jobs:
     steps:
       - name: JSON
         run: |
-          PROP=bar
-          echo ${{fromJson(env.JSON)[$PROP]}}
+          BRANCH=${GITHUB_REF##*/}
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+          echo ${{fromJson(env.JSON)[env.BRANCH]}}
