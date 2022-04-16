@@ -12,4 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: JSON
-        run: echo ${{fromJson(${{env.JSON}}).foo}}
+        run: |
+          JSON=${{env.JSON}}
+          echo ${{fromJson($JSON).foo}}
