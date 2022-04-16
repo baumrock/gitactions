@@ -26,8 +26,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Show branch and path
         run: |
-          echo ${{env.BRANCH}}
-          echo ${{fromJson(inputs.PATHS)[inputs.BRANCH]}}
+          BRANCH=main
+          echo ${{fromJson(inputs.PATHS)[$BRANCH]}}
 
 
 # name: JSON test
