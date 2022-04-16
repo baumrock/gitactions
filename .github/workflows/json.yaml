@@ -1,0 +1,11 @@
+name: JSON test
+
+on:
+  workflow_call
+
+jobs:
+  json-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: JSON
+        run: echo "hello world"
