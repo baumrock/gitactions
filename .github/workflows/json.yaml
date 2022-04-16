@@ -13,5 +13,4 @@ jobs:
     steps:
       - name: JSON
         run: |
-          JSON=${{env.JSON}}
           echo ${{fromJson(env.JSON).foo}}
