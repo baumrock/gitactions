@@ -17,4 +17,4 @@ jobs:
       - name: Get path
         run: |
           PATHS=${{fromJson(env.PATHS)}}
-          echo $PATHS.foo
+          echo ${{PATHS.foo}}
