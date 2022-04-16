@@ -3,10 +3,14 @@ name: JSON test
 on:
   - workflow_call
   - workflow_dispatch
+  - push
+
+env:
+  JSON: '{"foo":"FOO", "bar": "BAR"}'
 
 jobs:
   json-test:
     runs-on: ubuntu-latest
     steps:
       - name: JSON
-        run: echo "hello world"
+        run: echo ${{ env.JSON }}
