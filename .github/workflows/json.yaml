@@ -9,6 +9,7 @@ env:
     "foo":"FOO",
     "bar": "BAR"
   }'
+  PROP: foo
 
 jobs:
   json-test:
@@ -16,5 +17,4 @@ jobs:
     steps:
       - name: JSON
         run: |
-          OBJ=${{fromJson(env.JSON)}}
-          echo ${OBJ[foo]}
+          echo ${{fromJson(env.JSON)[env.PROP]}}
