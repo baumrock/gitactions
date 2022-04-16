@@ -29,7 +29,6 @@ jobs:
       - name: Show branch and path
         run: |
           echo ${{steps.step1.outputs.test}}
-          echo ${{fromJson(inputs.PATHS)[dev]}}
 
 
 # name: JSON test
