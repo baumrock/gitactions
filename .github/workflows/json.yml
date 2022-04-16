@@ -27,7 +27,7 @@ jobs:
       - name: Show branch and path
         run: |
           echo ${{env.BRANCH}}
-          echo ${{fromJson(inputs.PATHS).main}}
+          echo ${{fromJson(inputs.PATHS)[env.BRANCH]}}
 
 
 # name: JSON test
