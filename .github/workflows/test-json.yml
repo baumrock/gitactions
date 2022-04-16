@@ -1,0 +1,9 @@
+name: JSON test
+
+on:
+  - push
+
+jobs:
+  json-test:
+    uses: baumrock/gitactions/.github/workflows/json.yml@main
+
