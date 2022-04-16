@@ -14,4 +14,4 @@ jobs:
       - name: JSON
         run: |
           JSON=${{env.JSON}}
-          echo ${{fromJson($JSON).foo}}
+          echo ${{fromJson(env.JSON).foo}}
