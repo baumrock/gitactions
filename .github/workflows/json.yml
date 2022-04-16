@@ -6,9 +6,6 @@ name: CI
 on:
   workflow_call
 
-env:
-  BRANCH: ${GITHUB_REF##*/}
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -22,6 +19,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Show branch
         run: |
+          BRANCH=${GITHUB_REF##*/}
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
           echo ${{env.BRANCH}}
 
 
