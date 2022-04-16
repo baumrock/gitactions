@@ -4,7 +4,14 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  workflow_call
+  workflow_call:
+    inputs:
+      PATHS:
+        type: string
+        required: true
+
+env:
+  BRANCH: ${GITHUB_REF##*/}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,8 +26,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Show branch
         run: |
-          BRANCH=${GITHUB_REF##*/}
-          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
           echo ${{env.BRANCH}}
 
 
