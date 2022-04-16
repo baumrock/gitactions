@@ -6,4 +6,9 @@ on:
 jobs:
   json-test:
     uses: baumrock/gitactions/.github/workflows/json.yml@main
+    with:
+      PATHS: '{
+        "dev": "/home/users/kollar/www/kollar.at.staging.baumrock.com",
+        "main": "/home/users/kollar/www/www.kollar.at"
+      }'
 
